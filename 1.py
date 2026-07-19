@@ -5,9 +5,8 @@ player = {
     "gold": 0,
     "level": 1,
     "has_sword": False,
-    "inventory": []
+    "inventory": ["Деревянный меч", 15, 100]
 }
-inventory.append(["Деревянный меч", 15, 100])
 poison_cost = 100
 sword_cost = 300
 
