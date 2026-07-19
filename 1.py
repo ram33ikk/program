@@ -1,3 +1,8 @@
+import ast
+
+class Player:
+    pass
+
 print("=== Подземелье ===")
 
 player = {
@@ -110,7 +115,7 @@ def boss(player):
         return False
 
 def use_potion(player):
-    if "Зелье" in player["inventory"]:
+    if ["Зелье", 30, 100] in player["inventory"]:
         player["inventory"].remove(["Зелье", 30, 100])
         player["hp"] += 30
             
@@ -135,6 +140,8 @@ while True:
     print("6 - Инвентарь")
     print("7 - Босс")
     print("8 - Использовать зелье")
+    print("9 - Сохранить игру")
+    print("10 - Загрузить последнее сохранение")
     print("0 - Выйти из игры")
 
     choice = input("Выберите действие: ")
@@ -149,7 +156,7 @@ while True:
         battle(player)
 
     elif choice == "4":
-        shop(sword_cost, poison_cost, player)
+        shop(poison_cost, sword_cost, player)
 
     elif choice == "5":
         show_stats(player)
@@ -163,7 +170,40 @@ while True:
             break
 
     elif choice == "8":
-        hp = use_potion(player)
+        use_potion(player)
+
+    elif choice == "9":
+        file = open("save.txt", "w")
+        file.write(str(player["hp"]))
+        file.write("\n")
+        file.write(str(player["gold"]))
+        file.write("\n")
+        file.write(str(player["level"]))
+        file.write("\n")
+        file.write(str(player["has_sword"]))
+        file.write("\n")
+        file.write(str(player["inventory"]))
+        file.close()
+        print("Игра сохранена.")
+
+    elif choice == "10":
+            try:
+                file = open("save.txt", "r")
+                text = file.read()
+                lines = text.split("\n")
+                player["hp"] = int(lines[0])
+                player["gold"] = int(lines[1])
+                player["level"] = int(lines[2])
+                if lines[3] == "True":
+                    player["has_sword"] = True
+                else:
+                    player["has_sword"] = False
+                player["inventory"] = ast.literal_eval(lines[4])
+                file.close()
+                print("Файл сохранения загружен.")
+            except:
+                print("Файла сохранения нет!")
+        
 
     elif choice == "0":
         print("Игра закрыта.")
