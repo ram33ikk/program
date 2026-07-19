@@ -12,8 +12,8 @@ sword_cost = 300
 
 def go_forward(player):
     
-    player["hp"] = player["hp"] - 10
-    player["gold"] = player["gold"] + 20
+    player["hp"] -= 10
+    player["gold"] += 20
     
     print("Ты идешь вперед...")
     print("Находишь 20 золота.")
@@ -21,33 +21,33 @@ def go_forward(player):
 
     return
 
-def open_chest(gold):
+def open_chest(player):
     
-    gold = gold + 50
+    player["gold"] +=50
     
     print("Ты открыл сундук!")
-    inventory.append(["Зелье", 30, 100])
+    player["inventory"].append(["Зелье", 30, 100])
     print("Получено: Зелье!")
     
-    return gold
+    return
 
-def battle(hp, gold, level):
-    hp = hp - 25
+def battle(player):
+    player["hp"] -=25
     if has_sword:
-        gold = gold + 150
-        level = level + 1
+        player["gold"] += 150
+        player["level"] += 1
         print("Получено 150 золота благодаря мечу!")
     else:
-        gold = gold + 100
-        level = level + 1
+        player["gold"] += 100
+        player["level"] += 1
         print("Получено 100 золота.")
         
     print("Потеряно 25 здоровья.")
     print("Уровень повышен!")
 
-    return hp, gold, level
+    return
 
-def shop(poison_cost, sword_cost, hp, gold, has_sword):
+def shop(poison_cost, sword_cost, player):
     print()
     print("1 - Купить зелье (", poison_cost, ")")
     print("2 - Купить меч (", sword_cost, ")")
@@ -56,33 +56,33 @@ def shop(poison_cost, sword_cost, hp, gold, has_sword):
     shop_choice = input("Введите что хотите купить: ")
 
     if shop_choice == "1":
-        if gold >= poison_cost:
+        if player["gold"] >= poison_cost:
 
-            gold = gold - poison_cost
-            hp = hp + 30
+            player["gold"] -= poison_cost
+            player["hp"] += 30
 
             print("Ты купил зелье здоровья!")
             print("+30 к здоровью")
 
-            if hp > 100:
-                hp = 100
+            if player["hp"] > 100:
+                player["hp"] = 100
         else:
             print("Не хватает золота!")
 
     elif shop_choice == "2":
-        if gold >= sword_cost:
-            has_sword = True
-            gold = gold - sword_cost
+        if player["gold"] >= sword_cost:
+            player["has_sword"] = True
+            player["gold"] -= sword_cost
         else:
             print("Недостаточно золота!")
 
     elif shop_choice == "3":
-        return hp, gold, has_sword
+        return
 
     else:
         print("Не существует такого ответа!")
     
-    return hp, gold, has_sword
+    return
 
 def show_stats(player):
 
@@ -92,15 +92,15 @@ def show_stats(player):
     print("Уровень", player["level"])
     print("==================")
 
-def show_inventory(inventory):
+def show_inventory(player):
     print("=== Инвентарь ===")
         
-    for item in inventory:
+    for item in player["inventory"]:
         print(item[0])
     return
 
-def boss(level):
-    if level >= 5:
+def boss(player):
+    if player["level"] >= 5:
         print("Ты победил босса!")
         print("Поздравляем!")
         print("Ты прошел игру!")
@@ -109,20 +109,20 @@ def boss(level):
         print("Сначала достигни 5 уровня!")
         return False
 
-def use_potion(hp, inventory):
-    if "Зелье" in inventory:
+def use_potion(player):
+    if "Зелье" in player["inventory"]:
         inventory.remove("Зелье")
-        hp = hp + 30
+        player["hp"] += 30
             
-        if hp > 100:
-            hp = 100
+        if player["hp"] > 100:
+            player["hp"] = 100
     
         print("Ты использовал зелье!")
         print("Здоровье восстановлено.")
     else:
         print("У тебя нет Зелья!")
     
-    return hp
+    return
 
 while True:
 
@@ -143,27 +143,27 @@ while True:
         go_forward(player)
 
     elif choice == "2":
-        gold = open_chest(gold)
+        open_chest(player)
 
     elif choice == "3":
-        hp, gold, level = battle(hp, gold, level)
+        battle(player)
 
     elif choice == "4":
-        hp, gold, has_sword = shop(sword_cost, poison_cost, hp, gold, has_sword)
+        shop(sword_cost, poison_cost, player)
 
     elif choice == "5":
         show_stats(player)
 
     elif choice == "6":
-        show_inventory(inventory)
+        show_inventory(player)
 
     elif choice == "7":
-        boss_won = boss(level)
+        boss_won = boss(player)
         if boss_won:
             break
 
     elif choice == "8":
-        hp = use_potion(hp, inventory)
+        hp = use_potion(player)
 
     elif choice == "0":
         print("Игра закрыта.")
@@ -172,6 +172,6 @@ while True:
     else:
         print("Такого действия нет!")
 
-    if hp <= 0:
+    if player["hp"] <= 0:
         print("Ты погиб...")
         break
