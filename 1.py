@@ -10,16 +10,16 @@ player = {
 poison_cost = 100
 sword_cost = 300
 
-def go_forward(hp, gold):
+def go_forward(player):
     
-    hp = hp - 10
-    gold = gold + 20
+    player["hp"] = player["hp"] - 10
+    player["gold"] = player["gold"] + 20
     
     print("Ты идешь вперед...")
     print("Находишь 20 золота.")
     print("Теряешь 10 здоровья.")
 
-    return hp, gold
+    return
 
 def open_chest(gold):
     
@@ -140,7 +140,7 @@ while True:
     choice = input("Выберите действие: ")
 
     if choice == "1":
-        hp, gold = go_forward(hp, gold)
+        go_forward(player)
 
     elif choice == "2":
         gold = open_chest(gold)
