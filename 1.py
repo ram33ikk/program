@@ -5,7 +5,7 @@ player = {
     "gold": 0,
     "level": 1,
     "has_sword": False,
-    "inventory": ["Деревянный меч", 15, 100]
+    "inventory": [["Деревянный меч", 15, 100]]
 }
 poison_cost = 100
 sword_cost = 300
@@ -33,7 +33,7 @@ def open_chest(player):
 
 def battle(player):
     player["hp"] -=25
-    if has_sword:
+    if player["has_sword"]:
         player["gold"] += 150
         player["level"] += 1
         print("Получено 150 золота благодаря мечу!")
@@ -111,7 +111,7 @@ def boss(player):
 
 def use_potion(player):
     if "Зелье" in player["inventory"]:
-        inventory.remove("Зелье")
+        player["inventory"].remove(["Зелье", 30, 100])
         player["hp"] += 30
             
         if player["hp"] > 100:
