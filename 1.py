@@ -84,12 +84,12 @@ def shop(poison_cost, sword_cost, hp, gold, has_sword):
     
     return hp, gold, has_sword
 
-def show_stats(hp, gold, level):
+def show_stats(player):
 
     print("===== Герой =====")
-    print("Здоровье: ", hp)
-    print("Золото: ", gold)
-    print("Уровень", level)
+    print("Здоровье: ", player["hp"])
+    print("Золото: ", player["gold"])
+    print("Уровень", player["level"])
     print("==================")
 
 def show_inventory(inventory):
@@ -152,7 +152,7 @@ while True:
         hp, gold, has_sword = shop(sword_cost, poison_cost, hp, gold, has_sword)
 
     elif choice == "5":
-        show_stats(hp, gold, level)
+        show_stats(player)
 
     elif choice == "6":
         show_inventory(inventory)
