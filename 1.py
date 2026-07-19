@@ -1,10 +1,12 @@
 print("=== Подземелье ===")
 
-hp = 100
-gold = 0
-level = 1
-has_sword = False
-inventory = []
+player = {
+    "hp": 100,
+    "gold": 0,
+    "level": 1,
+    "has_sword": False,
+    "inventory": []
+}
 inventory.append(["Деревянный меч", 15, 100])
 poison_cost = 100
 sword_cost = 300
