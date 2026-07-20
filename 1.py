@@ -44,18 +44,19 @@ class Player:
 
         return
 
-    def shop(self, poison_cost, sword_cost):
+    def shop(self):
         print()
-        print("1 - Купить зелье (", poison_cost, ")")
-        print("2 - Купить меч (", sword_cost, ")")
+        print("1 - Купить зелье (", shop.poison_cost, ")")
+        print("2 - Купить меч (", shop.sword_cost, ")")
         print("3 - Выйти из магазина")
 
+        
         shop_choice = input("Введите что хотите купить: ")
 
         if shop_choice == "1":
-            if self.gold >= poison_cost:
+            if self.gold >= shop.poison_cost:
 
-                self.gold -= poison_cost
+                self.gold -= shop.poison_cost
                 self.hp += 30
 
                 print("Ты купил зелье здоровья!")
@@ -67,9 +68,9 @@ class Player:
                 print("Не хватает золота!")
 
         elif shop_choice == "2":
-            if self.gold >= sword_cost:
+            if self.gold >= shop.sword_cost:
                 self.has_sword = True
-                self.gold -= sword_cost
+                self.gold -= shop.sword_cost
             else:
                 print("Недостаточно золота!")
 
@@ -123,15 +124,15 @@ class Player:
     
     def save_game(self):
         file = open("save.txt", "w")
-        file.write(str(player.hp))
+        file.write(str(self.hp))
         file.write("\n")
-        file.write(str(player.gold))
+        file.write(str(self.gold))
         file.write("\n")
-        file.write(str(player.level))
+        file.write(str(self.level))
         file.write("\n")
-        file.write(str(player.has_sword))
+        file.write(str(self.has_sword))
         file.write("\n")
-        file.write(str(player.inventory))
+        file.write(str(self.inventory))
         file.close()
         print("Игра сохранена.")
     
@@ -140,27 +141,27 @@ class Player:
             file = open("save.txt", "r")
             text = file.read()
             lines = text.split("\n")
-            player.hp = int(lines[0])
-            player.gold = int(lines[1])
-            player.level = int(lines[2])
+            self.hp = int(lines[0])
+            self.gold = int(lines[1])
+            self.level = int(lines[2])
             if lines[3] == "True":
-                player.has_sword = True
+                self.has_sword = True
             else:
-                player.has_sword = False
-            player.inventory = ast.literal_eval(lines[4])
+                self.has_sword = False
+            self.inventory = ast.literal_eval(lines[4])
             file.close()
             print("Файл сохранения загружен.")
         except:
             print("Файла сохранения нет!")
+class Shop:
+    def __init__(self):
+        self.poison_cost = 100
+        self.sword_cost = 300
 
 print("=== Подземелье ===")
 
 player = Player()
-
-poison_cost = 100
-sword_cost = 300
-
-
+shop = Shop()
 
 while True:
 
@@ -179,37 +180,35 @@ while True:
 
     choice = input("Выберите действие: ")
 
-    if choice == "1":
-        player.go_forward
+    if choice == "1":        player.go_forward()
 
-    elif choice == "2":
-        player.open_chest
+    elif choice == "2":        player.open_chest()
 
     elif choice == "3":
-        player.battle
+        player.battle()
 
     elif choice == "4":
-        player.shop
+        player.shop()
 
     elif choice == "5":
-        player.show_stats
+        player.show_stats()
 
     elif choice == "6":
-        player.show_inventory
+        player.show_inventory()
 
     elif choice == "7":
-        boss_won = player.boss
+        boss_won = player.boss()
         if boss_won:
             break
 
     elif choice == "8":
-        player.use_potion
+        player.use_potion()
 
     elif choice == "9":
-        player.save_game
+        player.save_game()
 
     elif choice == "10":
-        player.load_game
+        player.load_game()
         
     elif choice == "0":
         print("Игра закрыта.")
