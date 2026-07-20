@@ -44,44 +44,6 @@ class Player:
 
         return
 
-    def shop(self):
-        print()
-        print("1 - Купить зелье (", shop.poison_cost, ")")
-        print("2 - Купить меч (", shop.sword_cost, ")")
-        print("3 - Выйти из магазина")
-
-        
-        shop_choice = input("Введите что хотите купить: ")
-
-        if shop_choice == "1":
-            if self.gold >= shop.poison_cost:
-
-                self.gold -= shop.poison_cost
-                self.hp += 30
-
-                print("Ты купил зелье здоровья!")
-                print("+30 к здоровью")
-
-                if self.hp > 100:
-                    self.hp = 100
-            else:
-                print("Не хватает золота!")
-
-        elif shop_choice == "2":
-            if self.gold >= shop.sword_cost:
-                self.has_sword = True
-                self.gold -= shop.sword_cost
-            else:
-                print("Недостаточно золота!")
-
-        elif shop_choice == "3":
-            return
-
-        else:
-            print("Не существует такого ответа!")
-        
-        return
-
     def show_stats(self):
         print("===Твои характеристики===")
         print()
@@ -157,6 +119,44 @@ class Shop:
     def __init__(self):
         self.poison_cost = 100
         self.sword_cost = 300
+
+    def shop(self):
+        print()
+        print("1 - Купить зелье (", self.poison_cost, ")")
+        print("2 - Купить меч (", self.sword_cost, ")")
+        print("3 - Выйти из магазина")
+
+        
+        shop_choice = input("Введите что хотите купить: ")
+
+        if shop_choice == "1":
+            if player.gold >= self.poison_cost:
+
+                player.gold -= self.poison_cost
+                player.hp += 30
+
+                print("Ты купил зелье здоровья!")
+                print("+30 к здоровью")
+
+                if player.hp > 100:
+                    player.hp = 100
+            else:
+                print("Не хватает золота!")
+
+        elif shop_choice == "2":
+            if player.gold >= self.sword_cost:
+                player.has_sword = True
+                player.gold -= self.sword_cost
+            else:
+                print("Недостаточно золота!")
+
+        elif shop_choice == "3":
+            return
+
+        else:
+            print("Не существует такого ответа!")
+        
+        return
 
 print("=== Подземелье ===")
 
