@@ -1,24 +1,24 @@
 import ast
 
 class Player:
-    pass
+    def __init__(self):
+        self.hp = 100
+        self.gold = 0
+        self.level = 1
+        self.has_sword = False
+        self.inventory = [["Деревянный меч", 15, 100]]
 
 print("=== Подземелье ===")
 
-player = {
-    "hp": 100,
-    "gold": 0,
-    "level": 1,
-    "has_sword": False,
-    "inventory": [["Деревянный меч", 15, 100]]
-}
+player = Player()
+
 poison_cost = 100
 sword_cost = 300
 
 def go_forward(player):
     
-    player["hp"] -= 10
-    player["gold"] += 20
+    player.hp -= 10
+    player.gold += 20
     
     print("Ты идешь вперед...")
     print("Находишь 20 золота.")
@@ -28,23 +28,23 @@ def go_forward(player):
 
 def open_chest(player):
     
-    player["gold"] +=50
+    player.gold +=50
     
     print("Ты открыл сундук!")
-    player["inventory"].append(["Зелье", 30, 100])
+    player.inventory.append(["Зелье", 30, 100])
     print("Получено: Зелье!")
     
     return
 
 def battle(player):
-    player["hp"] -=25
-    if player["has_sword"]:
-        player["gold"] += 150
-        player["level"] += 1
+    player.hp -=25
+    if player.has_sword:
+        player.gold += 150
+        player.level += 1
         print("Получено 150 золота благодаря мечу!")
     else:
-        player["gold"] += 100
-        player["level"] += 1
+        player.gold += 100
+        player.level += 1
         print("Получено 100 золота.")
         
     print("Потеряно 25 здоровья.")
@@ -61,23 +61,23 @@ def shop(poison_cost, sword_cost, player):
     shop_choice = input("Введите что хотите купить: ")
 
     if shop_choice == "1":
-        if player["gold"] >= poison_cost:
+        if player.gold >= poison_cost:
 
-            player["gold"] -= poison_cost
-            player["hp"] += 30
+            player.gold -= poison_cost
+            player.hp += 30
 
             print("Ты купил зелье здоровья!")
             print("+30 к здоровью")
 
-            if player["hp"] > 100:
-                player["hp"] = 100
+            if player.hp > 100:
+                player.hp = 100
         else:
             print("Не хватает золота!")
 
     elif shop_choice == "2":
-        if player["gold"] >= sword_cost:
-            player["has_sword"] = True
-            player["gold"] -= sword_cost
+        if player.gold >= sword_cost:
+            player.has_sword = True
+            player.gold -= sword_cost
         else:
             print("Недостаточно золота!")
 
@@ -92,20 +92,20 @@ def shop(poison_cost, sword_cost, player):
 def show_stats(player):
 
     print("===== Герой =====")
-    print("Здоровье: ", player["hp"])
-    print("Золото: ", player["gold"])
-    print("Уровень", player["level"])
+    print("Здоровье: ", player.hp)
+    print("Золото: ", player.gold)
+    print("Уровень", player.level)
     print("==================")
 
 def show_inventory(player):
     print("=== Инвентарь ===")
         
-    for item in player["inventory"]:
+    for item in player.inventory:
         print(item[0])
     return
 
 def boss(player):
-    if player["level"] >= 5:
+    if player.level >= 5:
         print("Ты победил босса!")
         print("Поздравляем!")
         print("Ты прошел игру!")
@@ -115,12 +115,12 @@ def boss(player):
         return False
 
 def use_potion(player):
-    if ["Зелье", 30, 100] in player["inventory"]:
-        player["inventory"].remove(["Зелье", 30, 100])
-        player["hp"] += 30
+    if ["Зелье", 30, 100] in player.inventory:
+        player.inventory.remove(["Зелье", 30, 100])
+        player.hp += 30
             
-        if player["hp"] > 100:
-            player["hp"] = 100
+        if player.hp > 100:
+            player.hp = 100
     
         print("Ты использовал зелье!")
         print("Здоровье восстановлено.")
@@ -174,15 +174,15 @@ while True:
 
     elif choice == "9":
         file = open("save.txt", "w")
-        file.write(str(player["hp"]))
+        file.write(str(player.hp))
         file.write("\n")
-        file.write(str(player["gold"]))
+        file.write(str(player.gold))
         file.write("\n")
-        file.write(str(player["level"]))
+        file.write(str(player.level))
         file.write("\n")
-        file.write(str(player["has_sword"]))
+        file.write(str(player.has_sword))
         file.write("\n")
-        file.write(str(player["inventory"]))
+        file.write(str(player.inventory))
         file.close()
         print("Игра сохранена.")
 
@@ -191,14 +191,14 @@ while True:
                 file = open("save.txt", "r")
                 text = file.read()
                 lines = text.split("\n")
-                player["hp"] = int(lines[0])
-                player["gold"] = int(lines[1])
-                player["level"] = int(lines[2])
+                player.hp = int(lines[0])
+                player.gold = int(lines[1])
+                player.level = int(lines[2])
                 if lines[3] == "True":
-                    player["has_sword"] = True
+                    player.has_sword = True
                 else:
-                    player["has_sword"] = False
-                player["inventory"] = ast.literal_eval(lines[4])
+                    player.has_sword = False
+                player.inventory = ast.literal_eval(lines[4])
                 file.close()
                 print("Файл сохранения загружен.")
             except:
@@ -212,6 +212,6 @@ while True:
     else:
         print("Такого действия нет!")
 
-    if player["hp"] <= 0:
+    if player.hp <= 0:
         print("Ты погиб...")
         break
